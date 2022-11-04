@@ -1,0 +1,11 @@
+integer 2a. 
+boolean result.
+ 
+input(2a). 
+if(2a % 2 = 0) do 
+ result <- 1.
+if-not 
+ result <- 0.
+end-if 
+ 
+print(the result).  

@@ -1,0 +1,16 @@
+integer a. 
+boolean result <- 1.
+ 
+input(a). 
+ 
+if(a < 2 || a > 2 && a % 2 = 0) do 
+ result <- 0.
+if-not 
+ for(d <- 3, d*d <= a, d <- d + 2) do 
+  if(a % d = 0) do 
+   result <- 0.
+  end-if 
+ end-for 
+end-if 
+ 
+print(result). 

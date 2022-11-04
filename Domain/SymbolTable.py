@@ -17,7 +17,8 @@ class SymbolTable:
         elem = self.search(item)
         if elem == -1:
             hashed = self.__h(item)
-            self.__table[hashed].append((str(item), self.__next_position))
+            elem = self.__next_position
+            self.__table[hashed].append((item, self.__next_position))
             self.__next_position += 1
         return elem
 
@@ -28,23 +29,11 @@ class SymbolTable:
         return -1
 
     def __str__(self):
-        msg = ""
-        for i in range(self.__size):
-            msg += "Bucket {}: {}\n".format(i, self.__table[i])
+        msg = "Token - Position\n"
+        elems = ["" for _ in range(self.__next_position)]
+        for bucket in self.__table:
+            for elem in bucket:
+                elems[elem[1]] = elem[0]
+        for i in range(self.__next_position):
+            msg += elems[i] + " | " + str(i) + "\n"
         return msg
-
-
-"""
-if __name__ == "__main__":
-    ST = SymbolTable(5)
-    ST.add("test")
-    print(ST)
-    ST.add("testing")
-    print(ST)
-    ST.add(3)
-    print(ST)
-    ST.add(8)
-    print(ST)
-    ST.add("testing")
-    print(ST)
-"""

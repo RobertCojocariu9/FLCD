@@ -1,0 +1,10 @@
+integer n, x, s <- 0.
+
+input(n).
+
+for(i <- 0, i < n, i <- i + 1) do
+ input(x).
+ s <- s + x.
+end-for
+
+print(s).

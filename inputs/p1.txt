@@ -1,0 +1,20 @@
+integer a, b, c, min.
+input(a). 
+input(b). 
+input(c). 
+ 
+if(a < b) do 
+ if(a < c) do 
+  min <- a. 
+ if-not 
+  min <- c. 
+ end-if 
+if-not 
+ if(b < c) do 
+  min <- b. 
+ if-not 
+  min <- c. 
+ end-if 
+end-if 
+
+print(min). 
