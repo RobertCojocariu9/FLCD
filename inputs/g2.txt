@@ -1,0 +1,30 @@
+program,letter,sign,lettersequence,letterdigit,logicaloperator,declarationlist,digit,nonzerodigit,character,constchar,string,char,stmtlist,stmt,simplestmt,structstmt,declarationstmt,type,identifier,structdecl,declaration,simpletype,arraydecl,assignstmt,iostmt,expression,integer,bool,term,operation,nr,operation,ifstmt,whilestmt,condition,relation
+:=,+,-,*,/,%,==,||,&&,<,<=,>=,>,<>,(,),;,[,],{,},',",if,else,int,char,bool,while,a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z,0,1,2,3,4,5,6,7,8,9
+program
+letter->a,b,c,d,e,f,g,h,i,j,k,l,m,n,o,p,q,r,s,t,u,v,w,x,y,z,A,B,C,D,E,F,G,H,I,J,K,L,M,N,O,P,Q,R,S,T,U,V,W,X,Y,Z
+digit->0,1,2,3,4,5,6,7,8,9
+integer->0,sign.nr,nr
+sign->+,-
+nr->digit,nonzerodigit.nr
+nonzerodigit->1,2,3,4,5,6,7,8,9
+bool->0,1
+identifier->letter,lettersequence
+lettersequence->letterdigit,letterdigit.lettersequence
+letterdigit->letter,digit
+logicaloperator->||,&&
+relation-><,<=,>=,>,==,<>
+program->{.stmtlist.}
+stmtlist->stmt,stmt.;.stmtlist
+stmt->simplestmt,structstmt
+simplestmt->assignstmt,iostmt,declarationstmt
+assignstmt->identifier.:=.expression
+expression->stmt,expression.operation.expression,(.expression.operation.expression.)
+operation->+,-,*,/
+iostmt->identifier.:= read(),print(.identifier.)
+declarationstmt->type. .identifier,structdecl
+structdecl->struct. .identifier.{.declarationlist.}
+declarationlist->declaration,declaration.;.declarationlist
+structstmt->ifstmt,whilestmt
+ifstmt->if(.condition.){.stmtlist.},if(.condition.){.stmtlist.}.else{.stmtlist.}
+condition->expression.relation.expression
+whilestmt->while(.condition.){.stmtlist.}
