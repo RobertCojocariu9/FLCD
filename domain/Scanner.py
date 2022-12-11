@@ -1,6 +1,6 @@
 import re
 
-from SymbolTable import SymbolTable
+from .SymbolTable import SymbolTable
 
 
 def check_part(char):
