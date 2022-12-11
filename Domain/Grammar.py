@@ -1,3 +1,6 @@
+from typing import Dict, List
+
+
 def print_menu():
     print('1. Non-terminals\n'
           '2. Terminals\n'
@@ -12,16 +15,32 @@ class Grammar:
     def __init__(self, file_name):
         self.__non_terminals = list()
         self.__terminals = list()
-        self.__productions = dict()
+        self.__productions: Dict[str, List[List[str]]] = dict()
         self.__start_symbol = None
         self.read_from_file(file_name)
+
+    @property
+    def start_symbol(self):
+        return self.__start_symbol
+
+    @property
+    def terminals(self):
+        return self.__terminals
+
+    @property
+    def non_terminals(self):
+        return self.__non_terminals
+
+    @property
+    def productions(self):
+        return self.__productions
 
     def read_from_file(self, file_name):
         with open(file_name, "r") as file:
             lines = file.readlines()
             self.__non_terminals = lines[0].strip().split(',')
             self.__terminals = lines[1].strip().split(',')
-            self.__start_symbol = lines[2]
+            self.__start_symbol = lines[2][:-1]
             for index in range(3, len(lines)):
                 elements = lines[index].strip().split('->')
                 assert len(elements) == 2, elements
@@ -76,5 +95,5 @@ class Grammar:
 
 
 if __name__ == "__main__":
-    grammar = Grammar("g2.txt")
+    grammar = Grammar("../inputs/g1.txt")
     grammar.menu()
