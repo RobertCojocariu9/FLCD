@@ -33,9 +33,46 @@ class Parser:
         self.input_stack = [self.grammar.start_symbol]
         self.word = word
 
+    def parse(self):
+        while self.state not in [PARSING_STATES["final"], PARSING_STATES["error"]]:
+            if self.state == PARSING_STATES["normal"]:
+                is_position_final = self.position == len(self.word) + 1
+                # Check success
+                if is_position_final and not self.input_stack:
+                    self.success()
+                    continue
+
+                input_head = self.input_stack[0]
+                if input_head in self.grammar.non_terminals:
+                    self.expand()
+                elif not is_position_final and input_head == self.word[self.position - 1]:
+                    self.advance()
+                else:
+                    self.momentary_insuccess()
+
+            elif self.state == PARSING_STATES["back"]:
+                working_head = self.working_stack[-1]
+
+                if isinstance(working_head, ProductionIndex):
+                    symbol = working_head.nonterminal
+                else:
+                    symbol = working_head
+
+                if symbol in self.grammar.terminals:
+                    self.back()
+                else:
+                    self.another_try()
+            else:
+                raise NotImplementedError
+
+        if self.state == PARSING_STATES["error"]:
+            print("ERROR")
+        else:
+            print("Sequence accepted")
+
     def expand(self):
         # WHEN: head of input stack is a nonterminal
-        print("Start expand...\n")
+        print(f"Start expand...\n")
         input_head = self.input_stack[0]
 
         if input_head not in self.grammar.non_terminals:
@@ -67,7 +104,7 @@ class Parser:
 
     def advance(self):
         # WHEN: head of input stack is a terminal = current symbol from input
-        print("Start advance...\n")
+        print(f"Start advance...\n")
         input_head = self.input_stack[0]
 
         if input_head not in self.grammar.terminals:
@@ -129,7 +166,7 @@ class Parser:
 
     def another_try(self):
         # WHEN: head of working stack is a nonterminal
-        print("Start another_try...\n")
+        print(f"Start another_try...\n")
         assert self.state == PARSING_STATES["back"]
 
         working_head = self.working_stack[-1]
@@ -147,11 +184,14 @@ class Parser:
             raise Error
 
         next_production = self._next_production()
-        nonterminal, production_index = self.working_stack.pop()
+        nonterminal, production_index = self.working_stack[-1]
         production = self.grammar.productions[nonterminal][production_index - 1]
 
         if next_production is None:
+            self.working_stack.pop()
             self.input_stack = [nonterminal, *self.input_stack[len(production):]]
+            print(f"{nonterminal} has no next production.")
+            print("End another try...\n")
             return
 
         self.state = PARSING_STATES["normal"]
@@ -161,7 +201,7 @@ class Parser:
         print("End another try...\n")
 
     def success(self):
-        print("Start success...\n")
+        print(f"Start success...\n")
         assert self.state == PARSING_STATES["normal"]
 
         if self.position != len(self.word) + 1 or self.input_stack:

@@ -25,6 +25,13 @@ class TestParser(unittest.TestCase):
         self.assertEqual(self.parser.working_stack, [])
         self.assertEqual(self.parser.input_stack, [self.grammar.start_symbol])
 
+    def test_parse(self):
+        self.parser.parse()
+
+        self.assertEqual(self.parser.state, PARSING_STATES["final"])
+        self.assertEqual(len(self.parser.input_stack), 0)
+        self.assertEqual(self.parser.position, len(self.word) + 1)
+
 
 class TestExpand(unittest.TestCase):
     def setUp(self) -> None:
