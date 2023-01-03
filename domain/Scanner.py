@@ -50,6 +50,10 @@ class Scanner:
                 line = line[:-1] if line[-1] == "\n" else line
                 self.__tokens.append(line)
 
+    @property
+    def pif(self):
+        return self.__pif
+
     def parse_line(self, line):
         formatted_line = []
         i = 0
